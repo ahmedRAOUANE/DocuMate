@@ -1,0 +1,51 @@
+{
+    "concept1": {
+        "id": "number",
+        "titte": "str",
+        "link": "str",
+        "explanation": "str",
+        "examples": [
+            {
+                "exampleTitle": "str",
+                "exampleCode": "str - html code to show",
+                "codeExplanation": "str - optional - if neccessary"
+            },
+            {
+                "exampleTitle": "str",
+                "exampleCode": "str - html code to show",
+                "codeExplanation": "str - optional - if neccessary"
+            }
+        ],
+        "subConcepts": [
+            {
+                "conceptTitle": "str",
+                "id": "number"
+            }
+        ]
+    },
+    "concept2": {
+        "id": "number",
+        "titte": "str",
+        "link": "str",
+        "explanation": "str",
+        "examples": [
+            {
+                "exampleTitle": "str",
+                "exampleCode": "str - html code to show",
+                "codeExplanation": "str - optional - if neccessary"
+            },
+            {
+                "exampleTitle": "str",
+                "exampleCode": "str - html code to show",
+                "codeExplanation": "str - optional - if neccessary"
+            }
+        ],
+        "subConcepts": [
+            {
+                "conceptTitle": "str",
+                "id": "number"
+            }
+        ]
+    }
+}
+
