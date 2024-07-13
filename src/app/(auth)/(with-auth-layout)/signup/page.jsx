@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { auth } from '@/config/firebase';
 import { useRouter } from 'next/navigation';
 import { updateProfile } from 'firebase/auth';
@@ -11,6 +11,8 @@ const Signup = () => {
     const emailRef = useRef();
     const usernameRef = useRef();
     const passwordRef = useRef();
+
+    const [error, setError] = useState(null);
 
     const [createUserWithEmailAndPassword] = useCreateUserWithEmailAndPassword(auth);
 
@@ -29,11 +31,11 @@ const Signup = () => {
             const res = await createUserWithEmailAndPassword(userCredentials.email, userCredentials.password);
             if (res?.user) {
                 await updateProfile(res.user, { displayName: userCredentials.username });
-                console.log("user is logged is seccessfully: ", res.user);
             }
 
             router.push("/");
         } catch (err) {
+            setError(err.message)
             console.log("error logining ing: ", err);
         }
     }
@@ -41,6 +43,12 @@ const Signup = () => {
     return (
         <div className='paper transparent outline box column full-width'>
             <h3 className='full-width text-center'>Signup</h3>
+
+            {error && (
+                <div className="paper danger outline">
+                    something the email or password is wrong, try again..
+                </div>
+            )}
 
             <form onSubmit={handleSignup} className="box column full-width">
                 <input ref={emailRef} type="email" name="email" id="email" placeholder='email' autoFocus />

@@ -2,11 +2,21 @@
 
 import Link from "next/link";
 import Header from "@/components/Header";
-import { auth } from "@/config/firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
+import useAuth from "@/custom-hooks/useAuth";
+import { useEffect } from "react";
+import useGetData from "@/custom-hooks/useGetData";
 
 export default function Home() {
-  const [user] = useAuthState(auth);
+  const user = useAuth()
+  const getData = useGetData()
+
+  useEffect(() => {
+    const fetchData = () => {
+      getData();
+    }
+
+    fetchData();
+  }, [getData]);
 
   return (
     <div>

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { auth } from '@/config/firebase';
 import { useRouter } from 'next/navigation';
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth"
@@ -9,6 +9,8 @@ import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth"
 const Login = () => {
     const emailRef = useRef();
     const passwordRef = useRef();
+
+    const [error, setError] = useState(null);
 
     const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
 
@@ -26,6 +28,7 @@ const Login = () => {
             await signInWithEmailAndPassword(userCredentials.email, userCredentials.password);
             router.push("/");
         } catch (err) {
+            setError(err.message)
             console.log("Error logining in: ", err);
         }
     }
@@ -33,6 +36,12 @@ const Login = () => {
     return (
         <div className='paper transparent outline box column full-width'>
             <h3 className='full-width text-center'>Login</h3>
+
+            {error && (
+                <div className="paper danger outline">
+                    something the email or password is wrong, try again..
+                </div>
+            )}
 
             <form onSubmit={handleLogin} className="box column full-width">
                 <input ref={emailRef} type="email" name="email" id="email" placeholder='email' />

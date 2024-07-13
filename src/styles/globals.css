@@ -71,11 +71,12 @@ textarea {
   border-radius: 7px;
   outline: none;
   border: none;
-  flex: 1;
+  /* flex: 1; */
   font-size: 20px;
   max-width: 100%;
   width: 100%;
   background-color: #121212;
+  resize: none;
 }
 
 input[name="checbox"] {

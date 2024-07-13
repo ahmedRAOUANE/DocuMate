@@ -1,42 +1,62 @@
 "use client";
 
-import { auth, db } from "@/config/firebase";
-import { doc, getDoc } from "firebase/firestore";
 import Link from "next/link";
+import { useSelector } from "react-redux";
+import useAuth from "@/custom-hooks/useAuth";
 import { useEffect } from "react";
+import useGetData from "@/custom-hooks/useGetData";
 
 const Docs = () => {
-    const [data, setData] = useState([]);
+    const data = useSelector(state => state.conceptSlice.conceptsList);
+    const error = useSelector(state => state.conceptSlice.err);
+
+    const user = useAuth();
+    const getData = useGetData();
 
     useEffect(() => {
-        const unsub = async () => {
-            const user = auth.currentUser;
-
-            const conceptDocRef = doc(db, "concepts", user.uid);
-            const conceptDocSnap = await getDoc(conceptDocRef);
-
-            if (conceptDocSnap.exists()) {
-                setData(conceptDocSnap.data())
-            }
+        const fetchData = () => {
+            getData();
         }
 
-        return unsub
-    }, []);
+        fetchData();
+    }, [getData]);
+
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
+
+    if (!user) {
+        return <div>Loading user...</div>;
+    }
+
+    if (data.length === 0) {
+        return <div>No data available.</div>;
+    }
+
+    const mainConcepts = data.filter(concept => !data.some(c => c.subConcepts && c.subConcepts.some(sub => sub.id === concept.id)));
 
     return (
         <div className="container">
             <h2>Docs</h2>
-            <div className="box column transparent paper outine ai-start">
-                <Link href={`docs/concept`} className="btn link" >
-                    <h2 className="">concept</h2>
-                </Link>
-                <div className="box jc-start">
-                    <Link href={`docs/concept/sub-consept`} className="btn link" >sub concept</Link>
-                    <Link href={`docs/concept/sub-concept`} className="btn link" >sub concept</Link>
-                </div>
+            <div className="box column">
+                {mainConcepts.map(concept => (
+                    <div key={concept.id} className="box column transparent paper ai-start full-width">
+                        <Link href={`docs/${concept.link}`} className="btn link">
+                            <h2>{concept.title}</h2>
+                        </Link>
+                        <div className="box jc-start">
+                            {concept.subConcepts && concept.subConcepts.map(sub => (
+                                <Link key={sub.id} href={`docs/${concept.link}/${sub.link}`} className="btn link">
+                                    {sub.title}
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+                ))}
             </div>
         </div>
     );
 };
 
 export default Docs;
+
