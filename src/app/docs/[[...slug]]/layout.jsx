@@ -2,9 +2,9 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
-import useGetData from "@/custom-hooks/useGetData";
 import { useSelector } from "react-redux";
+import useGetData from "@/custom-hooks/useGetData";
+import { useEffect, useMemo, useState } from "react";
 
 const DocsLayout = ({ children, params }) => {
     const mainConceptData = useSelector(state => state.conceptSlice.conceptsList);
@@ -82,11 +82,7 @@ const DocsLayout = ({ children, params }) => {
         );
     }
 
-    return (
-        <div>
-            {children}
-        </div>
-    );
+    return children
 };
 
 export default DocsLayout;

@@ -9,6 +9,7 @@ import useAuth from './useAuth';
 
 const useConcepts = () => {
     const selectedConcept = useSelector(state => state.conceptSlice.selectedConcept);
+    const status = useSelector(state => state.conceptSlice.status);
     const user = useAuth();
     const dispatch = useDispatch();
     const getData = useGetData();
@@ -44,26 +45,30 @@ const useConcepts = () => {
         try {
             const conceptDocRef = doc(db, "concepts", user.uid);
             await updateDoc(conceptDocRef, {
-                [`${selectedConcept.id}.subConcepts`]: arrayUnion(updatedData)
+                [`${selectedConcept.id}`]: updatedData
             });
             getData();
-            console.log('Data uploaded successfully');
+            alert('Concept updated successfully');
         } catch (err) {
             dispatch(setErr(err.message));
         }
     };
 
     const createConcept = async (payload) => {
-        if (selectedConcept.title === "new concept") {
-            await createConceptData(payload);
-        } else {
-            const updatedData = {
-                id: payload.id,
-                title: payload.title,
-                link: payload.link,
-            };
-            await updateConcept(updatedData);
-            await createConceptData(payload);
+        if (status === "new concept") {
+            if (selectedConcept.title === "new concept") {
+                await createConceptData(payload);
+            } else {
+                const updatedData = {
+                    id: payload.id,
+                    title: payload.title,
+                    link: payload.link,
+                };
+                await updateConcept(updatedData);
+                await createConceptData(payload);
+            }
+        } else if (status === "update concept") {
+            await updateConcept(payload);
         }
 
         await getData();

@@ -1,18 +1,22 @@
-'use client';
+"use client";
 
 import { v4 } from 'uuid';
 import Link from 'next/link';
+import { useSelector } from 'react-redux';
 import useAuth from '@/custom-hooks/useAuth';
 import Dropdown from '@/components/Dropdown';
-import React, { useEffect, useRef, useState } from 'react';
 import useUpload from '@/custom-hooks/useUploaod';
 import useConcepts from '@/custom-hooks/useCreate';
+import useGetData from '@/custom-hooks/useGetData';
+import React, { useEffect, useRef, useState } from 'react';
 
 // icons
 import Icon from '@/icons';
-import useGetData from '@/custom-hooks/useGetData';
 
 const CreateDocs = () => {
+    const selectedConcept = useSelector(state => state.conceptSlice.selectedConcept);
+    const status = useSelector(state => state.conceptSlice.status);
+
     const titleRef = useRef();
     const explanationRef = useRef();
     const imgRef = useRef();
@@ -28,10 +32,19 @@ const CreateDocs = () => {
     useEffect(() => {
         const fetchData = () => {
             getData();
-        }
+        };
 
         fetchData();
     }, [getData]);
+
+    useEffect(() => {
+        if (status === "update concept" && selectedConcept.title !== "new concept") {
+            titleRef.current.value = selectedConcept.title;
+            explanationRef.current.value = selectedConcept.explanation || "";
+            setExamplesList(selectedConcept.examples ? selectedConcept.examples.map((content, index) => ({ id: index + 1, content, title: `example-${index + 1}` })) : []);
+            setExamples(!!selectedConcept.examples);
+        }
+    }, [status, selectedConcept]);
 
     const addExampleField = () => {
         const newId = examplesList.length ? examplesList[examplesList.length - 1].id + 1 : 1;
@@ -55,16 +68,16 @@ const CreateDocs = () => {
                 const link = title.toLowerCase().replace(/\s+/g, '-');
                 const file = imgRef.current.files[0];
 
-                const imgUrl = file ? await uploadFile(file, `concepts/${user.uid}/${link}/images/${file.name}_${v4()}`) : null;
+                const imgUrl = file ? await uploadFile(file, `concepts/${user.uid}/${link}/images/${file.name}_${v4()}`) : selectedConcept.img || null;
 
                 const payload = {
-                    id: v4(),
+                    id: selectedConcept.id || v4(),
                     title,
                     link,
                     explanation: explanationRef.current.value,
                     img: imgUrl,
                     examples: examplesList.map(({ content }) => content),
-                    subConcepts: []
+                    subConcepts: selectedConcept.subConcepts || []
                 };
 
                 await createConcept(payload);
@@ -86,7 +99,7 @@ const CreateDocs = () => {
 
             <form className="concept-form box column" onSubmit={handleAddConcept}>
                 <div className="box full-width form-header" style={{ justifyContent: "flex-end" }}>
-                    <button type="submit">Add Concept</button>
+                    <button type="submit">{status === "update concept" ? "Update Concept" : "Add Concept"}</button>
                 </div>
 
                 <div className="box full-width ai-start">

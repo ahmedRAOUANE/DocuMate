@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import useAuth from "@/custom-hooks/useAuth";
-import { useEffect } from "react";
 import useGetData from "@/custom-hooks/useGetData";
 
 const Docs = () => {
@@ -30,7 +30,10 @@ const Docs = () => {
     }
 
     if (data.length === 0) {
-        return <div>No data available.</div>;
+        return <div className="full-height full-width box column center-y center-x">
+            <p>No data available.</p>
+            <Link href={"/create"} className="btn primary">create a concept</Link>
+        </div>;
     }
 
     const mainConcepts = data.filter(concept => !data.some(c => c.subConcepts && c.subConcepts.some(sub => sub.id === concept.id)));
