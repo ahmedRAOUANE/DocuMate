@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect } from "react";
 import Header from "@/components/Header";
 import useAuth from "@/custom-hooks/useAuth";
-import { useEffect } from "react";
 import useGetData from "@/custom-hooks/useGetData";
 
 export default function Home() {
