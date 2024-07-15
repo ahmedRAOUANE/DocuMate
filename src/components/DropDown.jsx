@@ -11,11 +11,17 @@ import Icon from "@/icons";
 const Dropdown = () => {
     const data = useSelector(state => state.conceptSlice.conceptsList);
     const selectedConcept = useSelector(state => state.conceptSlice.selectedConcept);
+    const status = useSelector(state => state.conceptSlice.status);
 
     const [isHidden, setIsHidden] = useState(true);
 
     const dispatch = useDispatch()
     const { selectConcept } = useConcepts();
+
+    const handleSelectConcept = (concept) => {
+        selectConcept(concept)
+        setIsHidden(true)
+    }
 
     const updateStatus = (value) => {
         dispatch(setStatus(value))
@@ -43,24 +49,28 @@ const Dropdown = () => {
     return (
         <div style={{ position: "relative" }} className='full-width'>
             <div className="box column">
-                <select name="status" id="status" className='btn full-width' onChange={e => updateStatus(e.target.value)}>
-                    <option value="new concept">new concept</option>
-                    <option value="update concept">update concept</option>
-                </select>
+                <div className="box">
+                    <button type='button' onClick={() => updateStatus("new concept")}>new concept</button>
+                    <button type='button' onClick={() => updateStatus("update concept")}>update concept</button>
+                </div>
 
-                <button type='button' onClick={() => setIsHidden(!isHidden)} className='full-width'>
-                    <span className='box'>
-                        {selectedConcept.title} {isHidden ? <Icon name="arrow-right" /> : <Icon name="arrow-down" />}
-                    </span>
+                <button type='button' onClick={() => setIsHidden(!isHidden)} className='full-width box'>
+                    {selectedConcept.title} {<Icon name="arrow-right" className={isHidden ? "toRight" : "toDown"} />}
                 </button>
             </div>
 
-            <div className={`paper scroller ${isHidden ? "hidden" : ""}`} style={{ position: "absolute", width: "300px", right: 0, maxHeight: "470px" }}>
+            <div className={`paper scroller ${isHidden ? "hidden" : ""}`} style={{ position: "absolute", width: "300px", right: 0, maxHeight: "470px", zIndex: 400 }}>
                 <ul className='box column full-width'>
+                    <li className='full-width'>
+                        <button type='button' className='full-width text-start' onClick={() => handleSelectConcept({ title: "new concept", id: "" })}>
+                            new concept
+                        </button>
+                    </li>
+                    <h3 className='full-width text-start disable-guitters text-slate-700'>concepts</h3>
                     {mainConcepts.map(concept => (
                         <li key={concept.id} className='full-width'>
                             <div className='box column full-width'>
-                                <button type='button' className='full-width text-start' onClick={() => selectConcept(concept)}>
+                                <button type='button' className='full-width text-start' onClick={() => handleSelectConcept(concept)}>
                                     {concept.title}
                                 </button>
                                 {concept.subConcepts && concept.subConcepts.length > 0 && renderSubConcepts(concept.subConcepts, "230px")}
