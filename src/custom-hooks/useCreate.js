@@ -1,11 +1,11 @@
 "use client";
 
+import useAuth from './useAuth';
+import useGetData from './useGetData';
 import { db } from '@/config/firebase';
 import { useDispatch, useSelector } from 'react-redux';
 import { setErr, setSelectedConcept } from '@/store/conceptSlice';
 import { doc, getDoc, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
-import useGetData from './useGetData';
-import useAuth from './useAuth';
 
 const useConcepts = () => {
     const selectedConcept = useSelector(state => state.conceptSlice.selectedConcept);
@@ -27,48 +27,69 @@ const useConcepts = () => {
                 await updateDoc(conceptDocRef, {
                     [payload.id]: payload
                 });
-                alert("Concept created successfully");
             } else {
                 await setDoc(conceptDocRef, {
                     [payload.id]: payload
                 });
-                alert("Concept created successfully");
             }
 
             getData();
         } catch (err) {
             dispatch(setErr(err.message));
+            console.log("error creating concept data: ", err);
         }
     };
 
-    const updateConcept = async (updatedData) => {
+    const updateSelectedConcept = async (updatedData) => {
         try {
             const conceptDocRef = doc(db, "concepts", user.uid);
             await updateDoc(conceptDocRef, {
                 [`${selectedConcept.id}`]: updatedData
             });
             getData();
-            alert('Concept updated successfully');
         } catch (err) {
             dispatch(setErr(err.message));
+            console.log('error updating a concept: ', err);
+        }
+    };
+
+    const addSubConcept = async (newData, currentConceptData) => {
+        try {
+            await createConceptData(currentConceptData);
+
+            const conceptDocRef = doc(db, "concepts", user.uid);
+            await updateDoc(conceptDocRef, {
+                [`${selectedConcept.id}.subConcepts`]: arrayUnion(newData)
+            });
+            getData();
+        } catch (err) {
+            dispatch(setErr(err.message));
+            console.log('error adding sub concept: ', err);
         }
     };
 
     const createConcept = async (payload) => {
-        if (status === "new concept") {
-            if (selectedConcept.title === "new concept") {
-                await createConceptData(payload);
-            } else {
-                const updatedData = {
-                    id: payload.id,
-                    title: payload.title,
-                    link: payload.link,
-                };
-                await updateConcept(updatedData);
-                await createConceptData(payload);
-            }
-        } else if (status === "update concept") {
-            await updateConcept(payload);
+        // New main concept
+        if (selectedConcept.title === "new concept" && status === "new concept") {
+            await createConceptData(payload);
+            alert("Concept created successfully");
+        }
+
+        // New sub-concept
+        else if (selectedConcept.title !== "new concept" && status === "new concept") {
+            const subConceptData = {
+                id: payload.id,
+                title: payload.title,
+                link: payload.link,
+            };
+            await addSubConcept(subConceptData, payload);
+            alert('Concept updated successfully');
+        }
+
+        // Update existing concept
+        else if (selectedConcept.title !== "new concept" && status === "update concept") {
+            await updateSelectedConcept(payload);
+            alert('Concept updated successfully');
         }
 
         await getData();

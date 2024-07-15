@@ -12,6 +12,7 @@ input[type="submit"] {
     color: var(--white-color);
     cursor: pointer;
     transition: border-color 0.25s;
+    position: relative;
 
     &.rounded {
         border-radius: 50%;
@@ -35,6 +36,16 @@ input[type="submit"] {
 
     &:hover {
         background-color: #505050;
+    }
+
+    &.delete {
+        background-color: red;
+        position: absolute;
+        top: -15px;
+        right: -15px;
+        border-radius: 50%;
+        width: 35px;
+        height: 35px;
     }
 }
 

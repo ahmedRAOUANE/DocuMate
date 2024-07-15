@@ -2,16 +2,24 @@
 
 import Link from "next/link";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
 import useAuth from "@/custom-hooks/useAuth";
+import { setStatus } from "@/store/conceptSlice";
 import useGetData from "@/custom-hooks/useGetData";
+import useConcepts from "@/custom-hooks/useCreate";
+import { useDispatch, useSelector } from "react-redux";
+
+// icons
+import Icon from "@/icons";
 
 const Docs = () => {
     const data = useSelector(state => state.conceptSlice.conceptsList);
     const error = useSelector(state => state.conceptSlice.err);
 
+    const dispatch = useDispatch();
+
     const user = useAuth();
     const getData = useGetData();
+    const { selectConcept } = useConcepts();
 
     useEffect(() => {
         const fetchData = () => {
@@ -20,6 +28,11 @@ const Docs = () => {
 
         fetchData();
     }, [getData]);
+
+    const updateStatus = (value, concept) => {
+        dispatch(setStatus(value))
+        selectConcept(concept)
+    }
 
     if (error) {
         return <div>Error: {error}</div>;
@@ -44,9 +57,14 @@ const Docs = () => {
             <div className="box column">
                 {mainConcepts.map(concept => (
                     <div key={concept.id} className="box column transparent paper ai-start full-width">
-                        <Link href={`docs/${concept.link}`} className="btn link">
-                            <h2>{concept.title}</h2>
-                        </Link>
+                        <div className="box full-width">
+                            <Link href={`docs/${concept.link}`} className="btn link box">
+                                <h2>{concept.title}</h2>
+                            </Link>
+                            <Link href={"create"} className="btn rounded icon" onClick={() => updateStatus("update concept", concept)}>
+                                <Icon name={"pen"} style={{ width: "40px" }} />
+                            </Link>
+                        </div>
                         <div className="box jc-start">
                             {concept.subConcepts && concept.subConcepts.map(sub => (
                                 <Link key={sub.id} href={`docs/${concept.link}/${sub.link}`} className="btn link">
