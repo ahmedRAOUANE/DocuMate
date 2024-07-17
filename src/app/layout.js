@@ -1,5 +1,7 @@
 import Providers from "@/store/provider";
 
+import Modal from "@/components/Modal";
+
 // styles
 import "../styles/globals.css";
 import "../styles/layout.css";
@@ -12,6 +14,7 @@ export default function RootLayout({ children }) {
       <body>
         <Providers>
           {children}
+          <Modal />
         </Providers>
       </body>
     </html>

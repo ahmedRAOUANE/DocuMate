@@ -3,13 +3,13 @@
 import Link from "next/link";
 import { useEffect } from "react";
 import useAuth from "@/custom-hooks/useAuth";
-import { setStatus } from "@/store/conceptSlice";
 import useGetData from "@/custom-hooks/useGetData";
-import useConcepts from "@/custom-hooks/useCreate";
+import useConcepts from "@/custom-hooks/useConcepts";
 import { useDispatch, useSelector } from "react-redux";
 
 // icons
 import Icon from "@/icons";
+import { setAction } from "@/store/confirmSlice";
 
 const Docs = () => {
     const data = useSelector(state => state.conceptSlice.conceptsList);
@@ -30,7 +30,7 @@ const Docs = () => {
     }, [getData]);
 
     const updateStatus = (value, concept) => {
-        dispatch(setStatus(value))
+        dispatch(setAction(value))
         selectConcept(concept)
     }
 
@@ -52,9 +52,9 @@ const Docs = () => {
     const mainConcepts = data.filter(concept => !data.some(c => c.subConcepts && c.subConcepts.some(sub => sub.id === concept.id)));
 
     return (
-        <div className="container">
-            <h2>Docs</h2>
-            <div className="box column">
+        <div>
+            <h2 className="sticky top-0 z-50 bb-inherit px-5 py-2 mt-0 bg-neutral-800 shadow">Docs</h2>
+            <div className="box column container">
                 {mainConcepts.map(concept => (
                     <div key={concept.id} className="box column transparent paper ai-start full-width">
                         <div className="box full-width">
