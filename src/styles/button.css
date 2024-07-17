@@ -47,16 +47,31 @@ input[type="submit"] {
         width: 35px;
         height: 35px;
     }
+
+    &.active {
+        background-color: #5d5d5d;
+    }
 }
 
 .btn-group {
     gap: 5px;
 
-    * {
-        padding: 5px 15px;
+    &.transparent {
+        background-color: transparent;
+    }
 
-        &.transparent {
-            background-color: transparent;
+    &.min-padding {
+        padding: 5px 15px;
+    }
+
+    &.switch {
+        border-radius: 10px;
+        gap: 0;
+        overflow: hidden;
+
+        button {
+            border-radius: 0;
+            flex: 1;
         }
     }
 }

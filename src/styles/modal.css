@@ -1,0 +1,32 @@
+.overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.24);
+    backdrop-filter: blur(3px);
+
+    &.conceptsListContainer {
+        background-color: transparent;
+        backdrop-filter: blur(0);
+
+        .conceptsList {
+            position: absolute;
+            right: 43px;
+            bottom: 10px;
+            height: 270px;
+            overflow: scroll;
+        }
+    }
+
+    &.deletContainer,
+    &.successContainer {
+        background-color: transparent;
+        backdrop-filter: blur(0);
+
+        .delet, 
+        .success {
+            position: absolute;
+            top: 20px;
+        }
+    }
+}

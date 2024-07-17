@@ -149,6 +149,7 @@
 .rounded {
     border-radius: 50%;
 }
+
 /* animation */
 .grow {
     flex-grow: 1;
