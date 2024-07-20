@@ -10,7 +10,6 @@ const nextConfig = {
       },
     ],
   },
-  output: 'export',
   basePath: '/DocuMate',
   assetPrefix: '/DocuMate/',
 };
