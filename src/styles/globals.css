@@ -1,6 +1,6 @@
 /* @tailwind base; */
 /* @tailwind components; */
-@tailwind utilities;
+/* @tailwind utilities; */
 
 :root {
 
@@ -14,12 +14,12 @@
   font-weight: 400;
 
   /* color */
-  --black-color: #242424;
-  --white-color: #f8f8f8;
+  --main-color: #bababa;
+    --white-color: white;
   --link-color: #4493f8;
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: var(--black-color);
+  color: black;
+    background-color: var(--main-color);
 
   /* text */
   font-synthesis: none;
@@ -28,15 +28,15 @@
   -moz-osx-font-smoothing: grayscale;
 
   /* shadow */
-  --out-line: 0 0 1px .5px black;
+  --out-line: 0 0 1px .7px #0000008a inset;
   --light-shadow: 0 1px 10px 2px #00000040;
   --heavy-shadow: 0 1px 8px 3px #00000078;
 
   /* transition */
-  transition: .8s linear all;
+  transition: .3s linear all;
 
   /* spacing */
-  letter-spacing: 2px;
+  letter-spacing: 1px;
 }
 
 body {
@@ -75,8 +75,9 @@ textarea {
   font-size: 20px;
   max-width: 100%;
   width: 100%;
-  background-color: #121212;
-  resize: none;
+  background-color: var(--white-color);
+    resize: vertical;
+    color: black;
 }
 
 input[name="checbox"] {
@@ -107,6 +108,7 @@ code {
   overflow: scroll;
   width: 100%;
 }
+
 select {
   &:focus {
     outline: none;

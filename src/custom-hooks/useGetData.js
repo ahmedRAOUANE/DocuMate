@@ -4,6 +4,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/config/firebase";
 import { setErr, setConceptsList } from "@/store/conceptSlice";
 import { useDispatch } from "react-redux";
+import { setIsLoading } from "@/store/statesSlice";
 
 const useGetData = () => {
     const dispatch = useDispatch();
@@ -23,6 +24,7 @@ const useGetData = () => {
                     }));
 
                     dispatch(setConceptsList(conceptsArray));
+                    dispatch(setIsLoading(false));
                 }
             } catch (err) {
                 dispatch(setErr(err.message));

@@ -6,7 +6,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 const Header = () => {
     const [user] = useAuthState(auth);
 
-    const linkList = user ? ["docs", "create"] : ["login", "signup"];
+    const linkList = user ? ["docs", "projects"] : ["login", "signup"];
 
     return (
         <header className="container transparent" style={{ position: "sticky", top: "0" }}>

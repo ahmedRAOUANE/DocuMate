@@ -24,8 +24,52 @@
     padding: var(--main-padding);
     box-shadow: var(--out-line), var(--light-shadow);
     background-color: var(--white-color);
-    color: var(--black-color);
+    color: var(--main-color);
     border-radius: 7px;
+}
+
+.codearea {
+    border-radius: 10px;
+
+    .codeLang {
+        padding: 10px;
+
+        input {
+            width: 150px;
+        }
+    }
+
+    .code {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+
+        textarea {
+            padding: 0;
+            min-height: 120px;
+            font-size: 18px;
+        }
+    }
+}
+
+.examplearea {
+    border-radius: 10px;
+    gap: 0;
+
+    .exampleInfo {
+        align-items: stretch;
+        padding: 10px;
+    }
+
+    .exampleContent {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+    }
+
+    textarea {
+        padding: 0;
+        min-height: 120px;
+        font-size: 18px;
+    }
 }
 
 .scroller {
@@ -33,10 +77,17 @@
     /* height: 300px; */
 }
 
+.small {
+    font-size: 18px;
+    background: var(--main-color);
+    padding: 5px 10px;
+    color: #4d4d4d;
+}
+
 .transparent {
     background-color: transparent;
     backdrop-filter: blur(50px);
-    color: #fff;
+    /* color: #fff; */
 }
 
 .unset {

@@ -38,6 +38,30 @@ const Pen = ({ className, style }) => {
     )
 }
 
+const Clear = ({ className, style }) => {
+    return (
+        <svg
+            className={className}
+            style={style}
+            viewBox="0 0 24 24"
+        >
+            <path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+        </svg>
+    )
+}
+
+const Plus = ({ className, style }) => {
+    return (
+        <svg
+            className={className}
+            style={style}
+            viewBox="0 0 24 24"
+        >
+            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6z"></path>
+        </svg>
+    )
+}
+
 const Icon = ({ name, className, style }) => {
     switch (name) {
         case "arrow-right":
@@ -48,6 +72,10 @@ const Icon = ({ name, className, style }) => {
             return <Remove className={className} style={style} />
         case "pen":
             return <Pen className={className} style={style} />
+        case "clear":
+            return <Clear className={className} style={style} />
+        case "plus":
+            return <Plus className={className} style={style} />
         default:
             return null;
     }

@@ -11,6 +11,7 @@ import { setErr, setNewConceptData, setSelectedConcept } from '@/store/conceptSl
 import { doc, getDoc, setDoc, updateDoc, arrayUnion, deleteField } from 'firebase/firestore';
 import useModal from './useModal';
 import { setOperation, setWindow } from '@/store/modalSlice';
+import { useRouter } from 'next/navigation';
 
 const useConcepts = () => {
     const selectedConcept = useSelector(state => state.conceptSlice.selectedConcept);
@@ -18,6 +19,7 @@ const useConcepts = () => {
     const action = useSelector(state => state.confirmSlice.action);
     const isConfirmed = useSelector(state => state.confirmSlice.isConfirmed);
 
+    const route = useRouter();
     const user = useAuth();
     const dispatch = useDispatch();
     const getData = useGetData();
@@ -115,7 +117,7 @@ const useConcepts = () => {
                         getData();
                     });
 
-                    console.log('Delete starts..');
+                    route.push("docs");
                 } else {
                     console.log('No document found for user: ', user.uid);
                 }
@@ -172,9 +174,8 @@ const useConcepts = () => {
             if (!selectedConcept && action === "new concept" && newConceptData) {
                 dispatch(setOperation("new main concept"))
                 await createConceptData(newConceptData);
-                openWindow("success")
 
-                dispatch(setNewConceptData(null));
+                // dispatch(setNewConceptData(null));
                 dispatch(setIsConfirmed(false));
             }
             // New sub-concept

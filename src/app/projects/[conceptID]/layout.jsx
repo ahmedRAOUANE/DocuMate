@@ -1,25 +1,17 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { v4 } from 'uuid';
-import Link from 'next/link';
+import React, { useEffect, useRef, useState } from 'react'
+import Link from 'next/link'
+import Dropdown from '@/components/dropdown/Dropdown'
 import { useDispatch, useSelector } from 'react-redux';
-import { storage } from '@/config/firebase';
 import useAuth from '@/custom-hooks/useAuth';
-import Dropdown from '@/components/Dropdown';
 import useUpload from '@/custom-hooks/useUpload';
-import useConcepts from '@/custom-hooks/useConcepts';
-import useGetData from '@/custom-hooks/useGetData';
-import { deleteObject, ref } from 'firebase/storage';
-import React, { useEffect, useRef, useState } from 'react';
-
-// icons
-import Icon from '@/icons';
 import useModal from '@/custom-hooks/useModal';
+import useConcepts from '@/custom-hooks/useConcepts';
 import { setAction, setIsConfirmed } from '@/store/confirmSlice';
-import { setNewConceptData } from '@/store/conceptSlice';
+import { setSelectedConcept } from '@/store/conceptSlice';
 
-const CreateDocs = () => {
+const ProjectLayout = ({ children }) => {
     const selectedConcept = useSelector(state => state.conceptSlice.selectedConcept);
     const action = useSelector(state => state.confirmSlice.action);
     const isConfirmed = useSelector(state => state.confirmSlice.isConfirmed);
@@ -36,17 +28,17 @@ const CreateDocs = () => {
 
     const user = useAuth();
     const { uploadFile } = useUpload();
-    const getData = useGetData();
+    // const getData = useGetData();
     const { openWindow } = useModal();
     const { createNewConcept } = useConcepts();
 
-    useEffect(() => {
-        const fetchData = () => {
-            getData();
-        };
+    // useEffect(() => {
+    //     const fetchData = () => {
+    //         getData();
+    //     };
 
-        fetchData();
-    }, [getData]);
+    //     fetchData();
+    // }, [getData]);
 
     useEffect(() => {
         if (selectedConcept) {
@@ -60,18 +52,6 @@ const CreateDocs = () => {
         }
     }, [action, selectedConcept]);
 
-    const addExampleField = () => {
-        const newId = examplesList.length ? examplesList[examplesList.length - 1].id + 1 : 1;
-        setExamplesList(prev => [...prev, { id: newId, content: "", title: `example-${newId}` }]);
-    };
-
-    const removeExampleField = (idToRemove) => {
-        setExamplesList(prev => prev.filter(example => example.id !== idToRemove));
-    };
-
-    const handleExampleChange = (id, content) => {
-        setExamplesList(prev => prev.map(example => example.id === id ? { ...example, content } : example));
-    };
 
     const handleImageChange = async (e) => {
         const file = e.target.files[0];
@@ -127,16 +107,21 @@ const CreateDocs = () => {
 
     return (
         <div className="">
-            <div className="container box" style={{ justifyContent: 'flex-end', marginBottom: "20px" }}>
-                <Link href="/docs">
+            <div className="container box full-width outline" style={{ marginBottom: "20px", boxShadow: "var(--light-shadow)", backgroundColoe: "#9E9E9E" }}>
+                <h2>DocuMate</h2>
+                <div className="title">
+                    <input type="text" id="title" placeholder='title' ref={titleRef} defaultValue={"untitled"} />
+                </div>
+                <Link href="/docs" className='btn'>
                     Go to Docs
                 </Link>
             </div>
 
-            <form className="concept-form box column" onSubmit={handleAddConcept} style={{ padding: "0 20px" }}>
-                <div className="box full-width form-header" style={{ justifyContent: "flex-end" }}>
-                    {selectedConcept && action === "update concept" && <button onClick={handleDelete} type="button">delete</button>}
-                    <button type="submit">{action === "update concept" ? "Update Concept" : "Add Concept"}</button>
+            <form className="concept-form box column nowrap" onSubmit={handleAddConcept} style={{ padding: "0 20px", maxHeight: "470px" }}>
+                <div className="box full-width form-header" style={{ justifyContent: "flex-end", flex: 0 }}>
+                    {selectedConcept && action === "update concept" && <button className='danger' onClick={handleDelete} type="button">delete</button>}
+                    <button className='success' type="submit">Save</button>
+                    <button className='danger' type="nutton" onClick={handleDelete}>Cancel</button>
                 </div>
 
                 <div className="box full-width ai-start">
@@ -158,58 +143,31 @@ const CreateDocs = () => {
                         </ul>
                     </div> */}
 
-                    <div className="scroller full-width" style={{ maxHeight: "420px" }}>
-                        <div className="box column full-width">
-                            <input type="text" id="title" placeholder='title' ref={titleRef} required />
+                    {children}
 
-                            <textarea id="explanation" placeholder='Explanation' ref={explanationRef} required style={{ minHeight: "200px" }} />
-
-                            {img && (
-                                <div className="box">
-                                    <div className="image-container relative">
-                                        <button type="button" className={"icon delete btn box center-x center-y"} onClick={handleRemoveImg}>
-                                            <Icon name={"remove"} />
-                                        </button>
-                                        <img src={img} alt="Concept Image" style={{ maxWidth: '200px', marginBottom: '10px' }} />
-                                    </div>
-                                </div>
-                            )}
-
-                            {examples && examplesList.map(example => (
-                                <div key={example.id} className="example-field box ai-start full-width">
-                                    <textarea
-                                        className='full-width'
-                                        type="text"
-                                        value={example.content}
-                                        onChange={(e) => handleExampleChange(example.id, e.target.value)}
-                                        placeholder={`Example ${example.id}`}
-                                        style={{ minHeight: "100px" }}
-                                    />
-                                    <button type="button" onClick={() => removeExampleField(example.id)}>Remove</button>
-                                </div>
-                            ))}
-                            {examples && <button type="button" onClick={addExampleField}>Add Another Example</button>}
-                        </div>
-                    </div>
-
-                    <div className="form-actions paper box column" style={{ width: '350px' }}>
-                        <h3 className='full-width text-start disable-guitters text-slate-600'>concept control</h3>
+                    <div className="form-actions outline paper box column hide-in-small nowrap scroller" style={{ width: '350px', maxHeight: "400px" }}>
+                        <h3 className='full-width text-start disable-guitters'>concept control</h3>
                         <Dropdown />
 
-                        <h3 className='full-width text-start disable-guitters text-slate-600'>content</h3>
-                        <div className="box">
-                            <label htmlFor="image" className='btn'>Add Image</label>
+                        <h3 className='full-width text-start disable-guitters'>content control</h3>
+                        <div className="box column full-width" style={{}}>
+                            <label htmlFor="image" className='btn full-width'>Add Image</label>
                             <input type="file" id="image" ref={imgRef} accept="image/*" className='hidden' onChange={handleImageChange} />
-                            <button type="button" onClick={() => setExamples(!examples)} className='full-width'>
+                            <button type="button" onClick={() => setExamples(!examples)} className='full-width text-start'>
                                 {examples ? "Remove Examples" : "Add Examples"}
+                            </button>
+                            <button type="button" className='full-width text-start'>
+                                Add Note
+                            </button>
+                            <button type="button" className='full-width text-start'>
+                                Add Comment
                             </button>
                         </div>
                     </div>
                 </div>
             </form>
         </div>
-    );
-};
+    )
+}
 
-export default CreateDocs;
-
+export default ProjectLayout
