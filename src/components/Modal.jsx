@@ -8,9 +8,9 @@ import useModal from '@/custom-hooks/useModal';
 import "../styles/modal.css";
 
 // components
-import DeleteMsg from './DeleteMsg';
-import DropdownConceptsList from './DropdownConceptsList';
-import SuccessMsg from './SuccessMsg';
+import DeleteMsg from './msgs/DeleteMsg';
+import DropdownConceptsList from './dropdown/DropdownConceptsList';
+import SuccessMsg from './msgs/SuccessMsg';
 
 const SelectedWindow = () => {
     const window = useSelector(state => state.modalSlice.window);

@@ -1,0 +1,55 @@
+/* workspace */
+.inputarea,
+.preview {
+    height: 400px;
+    overflow: scroll;
+
+    textarea {
+        height: 100%;
+        padding: 0;
+    }
+}
+
+.preview {
+    padding: 0;
+    gap: 0;
+
+    .preview-header,
+    .preview-body {
+        padding: 10px 20px;
+        width: 100%;
+    }
+
+    .preview-body {
+        color: black;
+        gap: 0;
+    }
+}
+
+.examplearea,
+.codearea {
+    gap: 0;
+    border-radius: 10px;
+
+    .exampleHeader,
+    .codeHeader {
+        padding: 10px;
+    }
+
+    .exampleBody,
+    .codeBody {
+        padding: 10px 20px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        color: black;
+    }
+}
+
+.codeBody {
+    overflow: scroll;
+}
+
+.articleLink {
+    text-decoration: underline;
+    color: blue;
+}
