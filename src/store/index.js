@@ -3,14 +3,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 
 // slices
-import conceptSlice from "./conceptSlice";
+import projectSlice from "./projectsSlice";
 import modalSlice from "./modalSlice";
 import confirmSlice from "./confirmSlice";
 import statesSlice from "./statesSlice";
 
 export const store = configureStore({
     reducer: {
-        conceptSlice,
+        projectSlice,
         modalSlice,
         confirmSlice,
         statesSlice

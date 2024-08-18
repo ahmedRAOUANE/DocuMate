@@ -3,20 +3,19 @@
 import Link from "next/link";
 import { useEffect } from "react";
 import Header from "@/components/Header";
+import { useDispatch } from "react-redux";
 import useAuth from "@/custom-hooks/useAuth";
-import useGetData from "@/custom-hooks/useGetData";
+import { setIsLoading } from "@/store/statesSlice";
 
 export default function Home() {
-  const user = useAuth()
-  const getData = useGetData()
+  const user = useAuth();
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    const fetchData = () => {
-      getData();
+    if (user) {
+      dispatch(setIsLoading(false));
     }
-
-    fetchData();
-  }, [getData]);
+  }, [dispatch, user])
 
   return (
     <div>

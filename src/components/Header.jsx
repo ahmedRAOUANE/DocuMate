@@ -1,12 +1,26 @@
 import React from 'react';
 import Link from 'next/link';
+import useAuth from '@/custom-hooks/useAuth';
+import { signOut } from 'firebase/auth';
 import { auth } from '@/config/firebase';
-import { useAuthState } from 'react-firebase-hooks/auth';
+import { useDispatch } from 'react-redux';
+import { setProjectsList, setSelectedProject } from '@/store/projectsSlice';
 
 const Header = () => {
-    const [user] = useAuthState(auth);
+    const user = useAuth();
+    const dispatch = useDispatch();
 
-    const linkList = user ? ["docs", "projects"] : ["login", "signup"];
+    const linkList = user ? ["docs", "projects", "logout"] : ["login", "signup"];
+
+    const handleLogout = async () => {
+        await signOut(auth).then(() => {
+            dispatch(setSelectedProject(null));
+            dispatch(setProjectsList([]));
+            localStorage.removeItem("projectID");
+        }, (res) => {
+            console.log("Error Logginning Out: ", res);
+        })
+    }
 
     return (
         <header className="container transparent" style={{ position: "sticky", top: "0" }}>
@@ -15,7 +29,7 @@ const Header = () => {
                 <ul className="box hide-in-small btn-group">
                     {linkList.map((link, idx) => (
                         <li className="btn transparent" key={idx}>
-                            <Link className='icon' href={link}>{link}</Link>
+                            {link === "logout" ? <button className='icon' onClick={handleLogout}>{link}</button> : <Link className='icon' href={link}>{link}</Link>}
                         </li>
                     ))}
                 </ul>

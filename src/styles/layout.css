@@ -28,50 +28,6 @@
     border-radius: 7px;
 }
 
-.codearea {
-    border-radius: 10px;
-
-    .codeLang {
-        padding: 10px;
-
-        input {
-            width: 150px;
-        }
-    }
-
-    .code {
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
-
-        textarea {
-            padding: 0;
-            min-height: 120px;
-            font-size: 18px;
-        }
-    }
-}
-
-.examplearea {
-    border-radius: 10px;
-    gap: 0;
-
-    .exampleInfo {
-        align-items: stretch;
-        padding: 10px;
-    }
-
-    .exampleContent {
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
-    }
-
-    textarea {
-        padding: 0;
-        min-height: 120px;
-        font-size: 18px;
-    }
-}
-
 .scroller {
     overflow: scroll;
     /* height: 300px; */

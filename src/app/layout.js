@@ -8,6 +8,7 @@ import Loading from "@/components/states/Loading";
 import "../styles/globals.css";
 import "../styles/layout.css";
 import "../styles/button.css";
+import "../styles/customes.css";
 
 export default function RootLayout({ children }) {
   return (

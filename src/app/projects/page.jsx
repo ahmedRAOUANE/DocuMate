@@ -1,50 +1,30 @@
 "use client";
 
-import React, { useEffect } from 'react';
-import useGetData from '@/custom-hooks/useGetData';
-import Link from 'next/link';
 import Icon from '@/icons';
-import { useDispatch, useSelector } from 'react-redux';
-import useConcepts from '@/custom-hooks/useConcepts';
-import { useRouter } from 'next/navigation';
-import { setError, setIsLoading } from '@/store/statesSlice';
-import { setNewConceptData, setSelectedConcept } from '@/store/conceptSlice';
-import { v4 } from 'uuid';
-import { setAction } from '@/store/confirmSlice';
+import Link from 'next/link';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import useData from '@/custom-hooks/useData';
+import useAuth from '@/custom-hooks/useAuth';
+import useProjects from '@/custom-hooks/useProjects';
 
 const Projects = () => {
-    const concepts = useSelector(state => state.conceptSlice.conceptsList);
+    const projects = useSelector(state => state.projectSlice.projectsList);
 
-    const getData = useGetData();
-    const { selectConcept } = useConcepts();
-    const route = useRouter();
-    const dispatch = useDispatch();
+    const user = useAuth();
+    const { getProjects, selectProject } = useData();
+    const { createProject } = useProjects();
 
+    // get all projects
     useEffect(() => {
-        const fetchData = () => {
-            getData();
-        };
-
-        fetchData();
-    }, [getData]);
+        if (user) {
+            getProjects(user.uid);
+        }
+    }, [user, getProjects]);
 
     const handleCreateNewProject = async () => {
-        dispatch(setIsLoading(true));
-
-        try {
-            const newConceptData = {
-                title: "untitled",
-                id: v4(),
-            }
-
-            dispatch(setNewConceptData(newConceptData));
-            dispatch(setAction("new concept"));
-            selectConcept(newConceptData);
-
-            route.push(`projects/${newConceptData.id}`);
-        } catch (err) {
-            dispatch(setError("somthing went wrong, try again.."));
-            console.log("Error createing new project: ", err);
+        if (user) {
+            createProject(user.uid);
         }
     }
 
@@ -52,9 +32,9 @@ const Projects = () => {
         return (
             <>
                 {
-                    concepts.map(concept => (
-                        <Link href={`projects/${concept.id}`} onClick={() => selectConcept(concept)} key={concept.id} className="box ai-start paper outline" style={{ width: "190px", height: "190px" }}>
-                            <h2>{concept.title}</h2>
+                    projects.map(project => (
+                        <Link href={`projects/${project.id}`} onClick={() => selectProject(user.uid, project.id)} key={project.id} className="box ai-start paper outline" style={{ width: "190px", height: "190px" }}>
+                            <h2>{project.title}</h2>
                         </Link>
                     ))
                 }

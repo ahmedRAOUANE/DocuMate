@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import useModal from '@/custom-hooks/useModal';
-import useConcepts from '@/custom-hooks/useConcepts';
+import useConcepts from '@/custom-hooks/useProjects';
 
 const DropdownConceptsList = () => {
     const data = useSelector(state => state.conceptSlice.conceptsList);
