@@ -50,8 +50,6 @@ const useInputParser = () => {
     }, []);
 
     const createExample = useCallback((body) => {
-        console.log('body: ', body);
-
         return (
             <div className="examplearea box column full-width outline">
                 <div className="exampleHeader box full-width">
@@ -60,8 +58,6 @@ const useInputParser = () => {
 
                 <div className='exampleBody full-width paper outline'>
                     {body.map((part, idx) => {
-                        console.log('part: ', part);
-
                         return (
                             <React.Fragment key={idx}>
                                 {createElement(part)}
