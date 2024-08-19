@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
 import useAuth from "@/custom-hooks/useAuth";
 import useData from "@/custom-hooks/useData";
-import { useDispatch, useSelector } from "react-redux";
 
 // icons
 import Icon from "@/icons";

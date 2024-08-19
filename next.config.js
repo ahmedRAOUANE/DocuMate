@@ -2,6 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
@@ -11,7 +12,7 @@ const nextConfig = {
     ],
   },
   output: 'export',
-  distDir: 'out',
+  distDir: 'dist',
   basePath: '/DocuMate',
   assetPrefix: '/DocuMate/',
 };

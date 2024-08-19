@@ -1,8 +1,9 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import useProjects from "./useProjects";
 import { tokenize } from "@/utils/lexer";
 import { parseTokens } from "@/utils/ast";
 import { useSelector } from "react-redux";
+import Image from "next/image";
 
 const useInputParser = () => {
     const selectedProject = useSelector(state => state.projectSlice.selectedProject);
@@ -31,7 +32,7 @@ const useInputParser = () => {
     const createMedia = useCallback((fileType, altText, filePath) => {
         const mediaProps = { src: filePath, alt: altText };
         if (fileType.toLowerCase() === 'img') {
-            return <img {...mediaProps} />;
+            return <Image {...mediaProps} />;
         }
         return React.createElement(fileType, mediaProps);
     }, []);
