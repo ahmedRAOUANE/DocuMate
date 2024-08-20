@@ -1,11 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
+import { useSelector } from 'react-redux';
 import useAuth from '@/custom-hooks/useAuth';
 import useData from '@/custom-hooks/useData';
-import useProjects from '@/custom-hooks/useProjects';
-import { useDispatch, useSelector } from 'react-redux';
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import useInputParser from '@/custom-hooks/useInputParser';
 
 const Workspace = () => {
