@@ -81,6 +81,8 @@ class EOF extends Part {
 
 const createText = (val) => new Text("Text", val);
 
+const createCodeLine = (val) => new Text("CodeLine", val);
+
 const createLink = (altText, url) => new Link("Link", altText, url);
 
 const createHeading = (level, text) => new Heading("Heading", level, text);
@@ -145,6 +147,13 @@ export const parseTokens = (tokens) => {
             case "CodeClosing":
                 stack.pop();
                 currentCode = stack.length > 0 ? stack[stack.length - 1] : null;
+                break;
+            case "CodeLine":
+                if (stack.length > 0) {
+                    stack[stack.length - 1].body.push(createCodeLine(token.value));
+                } else {
+                    ast.push(createCodeLine(token.value));
+                }
                 break;
             case "Link":
                 if (stack.length > 0) {

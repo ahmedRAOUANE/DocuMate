@@ -62,6 +62,29 @@ const Plus = ({ className, style }) => {
     )
 }
 
+const Copy = ({ className, style }) => {
+    return (
+        <svg className={className} viewBox="0 0 24 24" style={style}>
+            <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2m0 16H8V7h11z"></path>
+        </svg>
+    )
+}
+
+const Check = ({ className, style }) => {
+    return (
+        <svg className={className} viewBox="0 0 24 24" style={style}>
+            <path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path>
+        </svg>
+    )
+}
+const CheckBox = ({ className, style }) => {
+    return (
+        <svg className={className} viewBox="0 0 24 24" style={style}>
+            <path d="M20 2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2m-7.53 12L9 10.5l1.4-1.41 2.07 2.08L17.6 6 19 7.41zM4 6H2v14c0 1.1.9 2 2 2h14v-2H4z"></path>
+        </svg>
+    )
+}
+
 const Icon = ({ name, className, style }) => {
     switch (name) {
         case "arrow-right":
@@ -76,6 +99,10 @@ const Icon = ({ name, className, style }) => {
             return <Clear className={className} style={style} />
         case "plus":
             return <Plus className={className} style={style} />
+        case "copy":
+            return <Copy className={className} style={style} />
+        case "check":
+            return <Check className={className} style={style} />
         default:
             return null;
     }
