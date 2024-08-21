@@ -12,7 +12,7 @@ import useData from "./useData";
 const useProjects = () => {
     const dispatch = useDispatch();
     const route = useRouter();
-    const { selectProject } = useData()
+    const { getProject } = useData();
 
     const createProject = async (userId) => {
         dispatch(setIsLoading(true));
@@ -37,7 +37,6 @@ const useProjects = () => {
             }
 
             route.push(`projects/${projectID}`);
-            selectProject(userId, projectID);
             dispatch(setIsLoading(false));
         } catch (err) {
             dispatch(setIsLoading(false));
@@ -59,14 +58,13 @@ const useProjects = () => {
                     [`${projectId}.body`]: updatedData
                 });
 
-                // update the selected project
-                selectProject(userID, projectId);
-
                 dispatch(setIsLoading(false))
             } else {
                 console.error(`Project ${projectId} not found.`);
                 dispatch(setIsLoading(false))
             }
+
+            await getProject(userID, projectId);
         } catch (err) {
             console.error('Error updating project: ', err);
         }
@@ -86,8 +84,6 @@ const useProjects = () => {
                     [`${projectId}.title`]: updatedTitle
                 });
 
-                // update the selected project
-                selectProject(userID, projectId);
                 dispatch(setIsLoading(false))
             } else {
                 console.error(`Project ${projectId} not found.`);

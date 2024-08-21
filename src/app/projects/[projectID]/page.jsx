@@ -7,8 +7,9 @@ import useData from '@/custom-hooks/useData';
 import React, { useRef, useEffect } from 'react';
 import useInputParser from '@/custom-hooks/useInputParser';
 
-const Workspace = () => {
+const Workspace = ({ params }) => {
     const currentProject = useSelector(state => state.projectSlice.selectedProject);
+    const { projectID } = params;
 
     const typingareaRef = useRef();
 
@@ -18,8 +19,8 @@ const Workspace = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            if (user) {
-                await getProject(user.uid);
+            if (user && projectID) {
+                await getProject(user.uid, projectID);
             }
         };
 
@@ -40,7 +41,7 @@ const Workspace = () => {
         return () => {
             window.removeEventListener("keydown", handleKeydown);
         };
-    }, [getProject, user, updateText, currentProject]);
+    }, [getProject, user, updateText, currentProject, projectID]);
 
     return (
         <div className="workspace full-width">

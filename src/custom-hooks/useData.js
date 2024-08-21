@@ -8,18 +8,11 @@ import { useCallback } from "react";
 const useData = () => {
     const dispatch = useDispatch();
 
-    // save project id
-    const selectProject = (userId, projectId) => {
-        localStorage.setItem("projectID", projectId)
-        getProject(userId, projectId);
-    }
-
     // get one project
-    const getProject = useCallback(async (userId) => {
+    const getProject = useCallback(async (userId, projectId) => {
         dispatch(setIsLoading(true))
-        try {
-            const projectId = localStorage.getItem("projectID");
 
+        try {
             const projectDocRef = doc(db, "projects", userId);
             const projectDocSnap = await getDoc(projectDocRef);
 
@@ -59,7 +52,6 @@ const useData = () => {
     }, [dispatch]);
 
     return {
-        selectProject,
         getProject,
         getProjects,
     }
