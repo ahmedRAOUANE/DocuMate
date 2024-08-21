@@ -6,12 +6,13 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
-const ProjectLayout = ({ children }) => {
+const ProjectLayout = ({ children, params }) => {
     const currentProject = useSelector(state => state.projectSlice.selectedProject);
-
     const [isTitleChanged, setIsTileChanged] = useState(false);
 
     const titleRef = useRef();
+
+    const { projectID } = params;
 
     const user = useAuth();
     const { updateProjectTitle } = useProjects();
@@ -21,7 +22,7 @@ const ProjectLayout = ({ children }) => {
         const handleKeydown = (ev) => {
             if (ev.ctrlKey && ev.key === 's' && user) {
                 if (isTitleChanged) {
-                    updateProjectTitle(currentProject.id, titleRef.current.value);
+                    updateProjectTitle(projectID, titleRef.current.value);
                     setIsTileChanged(false);
                 }
             }
@@ -32,7 +33,7 @@ const ProjectLayout = ({ children }) => {
         return () => {
             window.removeEventListener("keydown", handleKeydown);
         };
-    }, [updateProjectTitle]);
+    }, [updateProjectTitle, isTitleChanged, user, projectID]);
 
     return (
         <div>
