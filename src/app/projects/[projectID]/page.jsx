@@ -12,6 +12,7 @@ const Workspace = ({ params }) => {
     const { projectID } = params;
 
     const typingareaRef = useRef();
+    const lineNumbersRef = useRef();
 
     const user = useAuth();
     const { getProject } = useData();
@@ -43,13 +44,38 @@ const Workspace = ({ params }) => {
         };
     }, [getProject, user, updateText, currentProject, projectID]);
 
+    const handleScroll = (e) => {
+        if (lineNumbersRef.current) {
+            lineNumbersRef.current.scrollTop = e.target.scrollTop;
+        }
+    };
+
+    const countLines = (text) => text.split("\n").length;
+
     return (
         <div className="workspace full-width">
             <div className="box column full-width">
                 <div className="box full-width ">
                     {/* input area */}
-                    <div className="inputarea paper box column full-width outline ">
-                        <textarea defaultValue={currentProject && currentProject.body} id="typingarea" placeholder='Type here' ref={typingareaRef} required style={{ resize: "none" }} />
+                    <div className="inputarea paper box nowrap full-width outline ">
+                        <div ref={lineNumbersRef} className="line-numbers scroller full-height" style={{ maxWidth: "fit-content" }}>
+                            <div>
+                                {currentProject && Array.from({ length: countLines(currentProject.body) }, (_, i) => (
+                                    <div key={i}>{i + 1}</div>
+                                ))}
+                            </div>
+                        </div>
+                        <div className='full-width full-height'>
+                            <textarea
+                                defaultValue={currentProject && currentProject.body}
+                                id="typingarea"
+                                placeholder='Type here'
+                                ref={typingareaRef}
+                                required
+                                style={{ resize: "none" }}
+                                onScroll={handleScroll}
+                            />
+                        </div>
                     </div>
 
                     {/* preview */}
